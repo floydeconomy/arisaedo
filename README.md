@@ -7,3 +7,12 @@ Hence, different users are able build different collections of aggregated data r
 
 ## COVID Initiative Index Protocol (CIIP)
 The CIIP is based entirely of the IPLD's content addressing features, whereby, we can link data based on several parameters that creates large trees of COVID-19 related data.
+
+## IPFS
+The system uses IPFS as the data-storage layer, by utilizing features introduced by the IPLD specification sheet. The goal of IPLD in this context is to enable decentralized data-structures that are universally addressable and linkable. Hence, we can start creating large unique aggregation of data's and rank them accordingly based on the community.
+
+Hence, we would first need to outline different structures to represent COVID-19 related data.
+1. Cases
+  - Country
+  - Worldwide Aggregation
+  - User Aggregation
