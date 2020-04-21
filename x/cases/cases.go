@@ -26,7 +26,7 @@ type CID struct {
 	Timestamp t.Time `json:"Time"`
 }
 
-func CaseRandomAustralia() Case {
+func CaseRandom() Case {
 	// scanner := bufio.NewScanner(os.Stdin)
 	//
 	// fmt.Println("Enter the total number of cases: ")

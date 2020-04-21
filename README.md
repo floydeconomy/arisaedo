@@ -16,3 +16,8 @@ Hence, we would first need to outline different structures to represent COVID-19
   - Country
   - Worldwide Aggregation
   - User Aggregation
+
+# API
+To Get/Put stuff to IPFS
+
+# Data Linkage
