@@ -2,7 +2,7 @@ package cases
 
 import (
 	c "github.com/ethereum/go-ethereum/common"
-	"github.com/floydeconomy/theCovidInitiative/pkg/common"
+	"github.com/floydeconomy/arisaedo-go/pkg/common"
 )
 
 type Person struct {

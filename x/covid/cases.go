@@ -3,7 +3,7 @@ package cases
 import (
 	t "time"
 
-	"github.com/floydeconomy/theCovidInitiative/pkg/common"
+	"github.com/floydeconomy/arisaedo-go/pkg/common"
 )
 
 type Case struct {
