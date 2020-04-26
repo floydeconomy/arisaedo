@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	c "github.com/floydeconomy/theCovidInitiative/x/cases"
+	c "github.com/floydeconomy/arisaedo-go/x/covid"
 	shell "github.com/ipfs/go-ipfs-api"
 )
 

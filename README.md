@@ -26,3 +26,4 @@ To Get/Put stuff to IPFS
 # How?
 1. stake token to upload data.
 2. stake token to publish ata aggregation index.
+3. aragon dao used to aggregate data.
