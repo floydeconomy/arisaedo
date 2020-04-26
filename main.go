@@ -2,30 +2,41 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
-	c "github.com/floydeconomy/theCovidInitiative/x/cases"
-	ipfs "github.com/floydeconomy/theCovidInitiative/x/ipfs"
-	store "github.com/floydeconomy/theCovidInitiative/x/store"
-	shell "github.com/ipfs/go-ipfs-api"
+	"github.com/gorilla/mux"
 )
 
-// Global variable to handle all the IPFS API client calls
-var sh *shell.Shell
+//
+// // Global variable to handle all the IPFS API client calls
+// var sh *shell.Shell
 
 func main() {
-	// Map of the Cases
-	s := store.StoreConfigure()
+	// // Map of the Cases
+	// s := store.StoreConfigure()
+	//
+	// // Infura
+	// sh = ipfs.IPFSConfigure()
+	//
+	// // Inputs
+	// c := c.CaseRandomAustralia()
+	//
+	// // Store
+	// s.StoreCase(c)
+	// fmt.Println(s)
+	//
+	// // Push to IPFS
+	// s.StorePushPendingCases(sh)
+	createServer()
+}
 
-	// Infura
-	sh = ipfs.IPFSConfigure()
+func homeLink(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome Home!")
+}
 
-	// Inputs
-	c := c.CaseRandomAustralia()
-
-	// Store
-	s.StoreCase(c)
-	fmt.Println(s)
-
-	// Push to IPFS
-	s.StorePushPendingCases(sh)
+func createServer() {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", homeLink)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
