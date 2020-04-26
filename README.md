@@ -1,4 +1,4 @@
-# theCovidInitiative
+# Arisaedo
 
 ## What we are trying to solve?
 Aggregation of data related to COVID-19, whereby, anyone can upload data based on the COVID Initiative Index Protocol (CIIP) that governs the specification for a persistent index and library for COVID related information.
@@ -20,12 +20,8 @@ Hence, we would first need to outline different structures to represent COVID-19
 # API
 To Get/Put stuff to IPFS
 
-# Data Linkage
-
-
 # Issues?
 1. Data of cases if of data of reported cases, instead, of data of cases. Hence, we aggregate data based on reported cases meaning that it can be false.
-2.
 
 # How?
 1. stake token to upload data.
