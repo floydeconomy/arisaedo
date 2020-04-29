@@ -2,40 +2,75 @@ package store
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
-
-	c "github.com/floydeconomy/arisaedo-go/x/covid"
+	"github.com/floydeconomy/arisaedo-go/x/covid"
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
+// Store represents the main connections to ipfs and ethereum blockchain
 type Store struct {
-	Pending map[string]c.Case        `json:"Pending"`
-	Address map[string]c.Addressable `json:"Address"`
+	Shell *shell.Shell
 }
 
-func StoreConfigure() *Store {
+// Compose makes a store structure which maintains connections
+// to IPFS through the shell variable
+func Compose() *Store {
 	return &Store{
-		Pending: make(map[string]c.Case),
-		Address: make(map[string]c.Addressable),
+		Shell: shell.NewShell("https://ipfs.infura.io:5001"),
 	}
 }
 
-func (s *Store) StorePushPendingCases(sh *shell.Shell) {
-	// Marshall JSON
-	m, err := json.Marshal(s.Pending)
+// Put adds the interface to IPFS and returns the corresponding content identifier (CID)
+func (s Store) Put(x interface {}) (*covid.Identifier, error) {
+	// marshall json
+	m, err := json.Marshal(x)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
-	// Push to IPFS
-	cid, err := sh.DagPut(m, "json", "cbor")
+	// ipfs put
+	cid, err := s.Shell.DagPut(m, "json", "cbor")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %s", err)
-		os.Exit(1)
+		return nil, err
 	}
+
+	// convert
+	c := covid.Identifier(cid)
+
+	// return
+	return &c, nil
 }
 
-func (s *Store) StoreCase(c c.Case) {
-	s.Pending[c.Country] = c
+// Add adds the case into IPFS and returns the identifier
+func (s Store) AddCase(c *covid.Case) (*covid.Identifier, error) {
+	// checks
+	err := c.Header().SanityCheck()
+	if err != nil {
+		return nil, err
+	}
+
+	// verify identifiers
+	err = s.Verify(c.Header().CountryID())
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.Verify(c.Header().ProvinceID())
+	if err != nil {
+		return nil, err
+	}
+
+	// add to ipfs
+	id, err := s.Put(c.Header().Body())
+	if err != nil {
+		return nil, err
+	}
+
+	// return
+	return id, nil
+}
+
+// Verify verifies that a given identifier exists in IPFS
+// todo: implement this
+func (s Store) Verify(id covid.Identifier) error {
+	return nil
 }
