@@ -1,4 +1,4 @@
-package covid
+package x
 
 import (
 	"sync/atomic"

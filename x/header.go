@@ -1,7 +1,8 @@
-package covid
+package x
 
 import (
 	"errors"
+	"github.com/floydeconomy/arisaedo-go/pkg/common"
 	"sync/atomic"
 )
 
@@ -24,8 +25,8 @@ type Header struct {
 // todo: implement signature and nonce fields
 type Body struct {
 	// IPFS Identifiers
-	CountryID  Identifier `json:"country"`
-	ProvinceID Identifier `json:"province"`
+	CountryID  common.Identifier `json:"country"`
+	ProvinceID common.Identifier `json:"province"`
 
 	// Case
 	Time      uint64 `json:"time"`
@@ -35,18 +36,24 @@ type Body struct {
 	Active    uint64 `json:"active"`
 }
 
-func (h *Header) Confirmed() uint64      { return h.body.Confirmed }
-func (h *Header) Death() uint64          { return h.body.Death }
-func (h *Header) Recovered() uint64      { return h.body.Recovered }
-func (h *Header) Active() uint64         { return h.body.Active }
-func (h *Header) Time() uint64           { return h.body.Time }
-func (h *Header) CountryID() Identifier  { return h.body.CountryID }
-func (h *Header) ProvinceID() Identifier { return h.body.ProvinceID }
-func (h *Header) Body() Body             { return h.body }
+func (h *Header) Confirmed() uint64             { return h.body.Confirmed }
+func (h *Header) Death() uint64                 { return h.body.Death }
+func (h *Header) Recovered() uint64             { return h.body.Recovered }
+func (h *Header) Active() uint64                { return h.body.Active }
+func (h *Header) Time() uint64                  { return h.body.Time }
+func (h *Header) CountryID() common.Identifier  { return h.body.CountryID }
+func (h *Header) ProvinceID() common.Identifier { return h.body.ProvinceID }
+func (h *Header) Body() Body                    { return h.body }
 
+// SanityCheck checks whether the case is valid
 func (h *Header) SanityCheck() error {
 	if h.Time() <= 0 {
 		return errors.New("invalid time")
+	}
+
+	// todo: fix this
+	if h.CountryID() == "" {
+		return errors.New("country id doesn't exists")
 	}
 
 	// ret: all passed
