@@ -1,4 +1,4 @@
-package arisaedo
+package node
 
 import (
 	"context"

@@ -1,11 +1,12 @@
-package arisaedo
+package main
 
 import (
 	"context"
 	"fmt"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/floydeconomy/arisaedo-go/api"
-	"github.com/floydeconomy/arisaedo-go/cmd/utils"
+	"github.com/floydeconomy/arisaedo-go/cmd/arisaedo/node"
+	"github.com/floydeconomy/arisaedo-go/cmd/arisaedo/utils"
 	"github.com/urfave/cli/v2"
 	"os"
 	"os/signal"
@@ -20,6 +21,7 @@ func main() {
 		Copyright: "2020 Arisaedo <https://github.com/floydeconomy/>",
 		Flags: []cli.Flag{
 			&utils.NetworkFlag,
+			&utils.ApiAddrFlag,
 			&utils.ApiCorsFlag,
 		},
 		Action: Actions,
@@ -47,7 +49,7 @@ func Actions(ctx *cli.Context) error {
 	utils.PrintAPIMessage(svrUrl, "1") // todo: nodeID should check p2p comm
 
 	// return
-	return New().Run(exit)
+	return node.New().Run(exit)
 }
 
 func handleExitSignal() context.Context {
