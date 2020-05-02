@@ -3,7 +3,7 @@ package utils
 import (
 	"context"
 	"fmt"
-	"github.com/floydeconomy/arisaedo-go/pkg/co"
+	"github.com/floydeconomy/arisaedo-go/co"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 	"net"
@@ -28,21 +28,19 @@ func StartAPIServer(ctx *cli.Context, handler http.Handler) (string, func(), err
 
 	// todo: middleware goes here
 
-
 	// serve
-	srv := &http.Server{Handler: handler}
+	server := &http.Server{Handler: handler}
 	var goes co.Goes
 	goes.Go(func() {
-		srv.Serve(listener)
+		server.Serve(listener)
 	})
 
 	// return
-	return "http://" +listener.Addr().String() + "/", func() {
-		srv.Close()
+	return "http://" + listener.Addr().String() + "/", func() {
+		server.Close()
 		goes.Wait()
 	}, nil
 }
-
 
 func handleAPITimeout(h http.Handler, timeout time.Duration) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

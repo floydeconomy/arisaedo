@@ -22,4 +22,9 @@ var (
 		Value: 10000,
 		Usage: "API request timeout value in milliseconds",
 	}
+	NodeIDFlag = cli.StringFlag{
+		Name: "node-id",
+		Value: "7214",
+		Usage: "This should be removed eventually!",
+	}
 )
