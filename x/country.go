@@ -1,27 +1,20 @@
 package x
 
-import "sync/atomic"
+import "github.com/floydeconomy/arisaedo-go/common"
 
 // Country represents locations of countries affected by COVID-19
 type Country struct {
-	header *LocationHeader
+	Header *CountryHeader
 
-	// caches
-	identifier atomic.Value
+	cache struct {
+		identifier common.Identifier
+	}
 }
 
-// Province represents states in a country
-type Province struct {
-	header *LocationHeader
-
-	// caches
-	identifier atomic.Value
-}
-
-// LocationHeader represents vital information about a certain place
-type LocationHeader struct {
-	Name     string     `json:"Name"`
-	Location Coordinate `json:"Location"`
+type CountryHeader struct {
+	// body
+	Name     string            `json:"Name"`
+	Location Coordinate        `json:"Location"`
 }
 
 // Coordinate represents lat/lng coordinates of a location
@@ -29,4 +22,3 @@ type Coordinate struct {
 	Latitude  int8 `json:"Latitude"`
 	Longitude int8 `json:"Longitude"`
 }
-

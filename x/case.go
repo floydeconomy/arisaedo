@@ -3,55 +3,25 @@ package x
 import (
 	"errors"
 	"github.com/floydeconomy/arisaedo-go/common"
-	"sync/atomic"
 )
+
+type Cases []Case
 
 // Case represents structure of COVID-19 cases
 type Case struct {
-	// body
-	header *Header
+	Header *CaseHeader
 
-	// caches
 	cache struct {
-		identifier atomic.Value
+		identifier string
 	}
 }
 
-// Cases represents a variety of cases
-type Cases []Case
-
-//// NewCase creates a new cases
-//func Compose(header *Header, body *Body) *Case {
-//	c := &Case{header: CopyHeader(header)}
-//	return c
-//}
-
-func (c *Case) Header() *Header { return c.header }
-
-
-type Nonce [8]byte
-
-// Header represents the entire COVID-19 case/death related data
-type Header struct {
-	// body
-	body Body
-
-	// cache
-	cache struct {
-		identifier atomic.Value
-		country    atomic.Value
-		province   atomic.Value
-	}
-}
-
-// Body represents the cases/death related to COVID-19
-// todo: implement signature and nonce fields
-type Body struct {
-	// IPFS Identifiers
+// CaseHeader represent internal information about the COVID-19 cases
+type CaseHeader struct {
+	// identifiers
 	CountryID  common.Identifier `json:"country"`
-	ProvinceID common.Identifier `json:"province"`
 
-	// Case
+	// body
 	Time      uint64 `json:"time"`
 	Confirmed uint64 `json:"confirmed"`
 	Death     uint64 `json:"death"`
@@ -59,26 +29,49 @@ type Body struct {
 	Active    uint64 `json:"active"`
 }
 
-func (h *Header) Confirmed() uint64             { return h.body.Confirmed }
-func (h *Header) Death() uint64                 { return h.body.Death }
-func (h *Header) Recovered() uint64             { return h.body.Recovered }
-func (h *Header) Active() uint64                { return h.body.Active }
-func (h *Header) Time() uint64                  { return h.body.Time }
-func (h *Header) CountryID() common.Identifier  { return h.body.CountryID }
-func (h *Header) ProvinceID() common.Identifier { return h.body.ProvinceID }
-func (h *Header) Body() Body                    { return h.body }
+// Compose method is usually to recover a case by its portions
+func Compose(header *CaseHeader) *Case {
+	return &Case{
+		Header: header,
+	}
+}
 
 // SanityCheck checks whether the case is valid
-func (h *Header) SanityCheck() error {
-	if h.Time() <= 0 {
+func (c *Case) SanityCheck() error {
+	if c.Header.Time == 0 {
 		return errors.New("invalid time")
 	}
-
-	// todo: fix this
-	if h.CountryID() == "" {
+	if common.IsEmpty(c.Header.CountryID) {
 		return errors.New("country id doesn't exists")
 	}
-
-	// ret: all passed
 	return nil
 }
+
+// Identifier represent the IPFS identifier for this case
+func (c *Case) Identifier() string {
+	// todo: ensure this is never returning empty string or undefined
+	return c.cache.identifier
+}
+
+//// Add adds the case into IPFS and returns the identifier
+//func AddCase(c *Case, r *Repository) (*common.Identifier, error) {
+//	// error checks
+//	if err := c.Header().SanityCheck(); err != nil {
+//		return nil, err
+//	}
+//	if err := r.Verify(c.Header().CountryID()); err != nil {
+//		return nil, err
+//	}
+//	if err := r.Verify(c.Header().ProvinceID()); err != nil {
+//		return nil, err
+//	}
+//
+//	// add to ipfs
+//	id, err := r.Put(c.Header().Body())
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	// return
+//	return id, nil
+//}
