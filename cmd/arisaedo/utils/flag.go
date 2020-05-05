@@ -27,4 +27,14 @@ var (
 		Value: "7214",
 		Usage: "This should be removed eventually!",
 	}
+	EthClientAddrFlag = cli.StringFlag{
+		Name: "ethclient",
+		Value: "https://mainnet.infura.io",
+		Usage: "Ethereum Client",
+	}
+	IPFSClientAddrFlag = cli.StringFlag{
+		Name: "ipfsclient",
+		Value: "https://ipfs.infura.io:5001",
+		Usage: "IPFS Client",
+	}
 )

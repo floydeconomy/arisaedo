@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/floydeconomy/arisaedo-go/api"
 	"github.com/floydeconomy/arisaedo-go/co"
+	"github.com/floydeconomy/arisaedo-go/store"
 	"github.com/pkg/errors"
 	"github.com/prometheus/common/log"
 	"github.com/urfave/cli/v2"
@@ -62,6 +63,21 @@ func HandleAPIMainThread(ctx *cli.Context) error {
 	return nil
 }
 
+func HandleStore() (*store.Store ,error) {
+	s, err := store.New(
+		store.Options{
+		Shell:     IPFSClientAddrFlag.Value,
+		Ethclient: EthClientAddrFlag.Value,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	PrintStoreMessage(IPFSClientAddrFlag.Value, EthClientAddrFlag.Value)
+
+	return s, nil
+}
+
 func HandleAPIGoRoutine(ctx *cli.Context) error {
 	handler, _ := api.New(ApiCorsFlag.Name)
 	svrUrl, svrClose, err := StartAPIServer(ctx, handler)
@@ -82,10 +98,19 @@ func handleAPITimeout(h http.Handler, timeout time.Duration) http.Handler {
 	})
 }
 
+// todo: move?
 func PrintAPIMessage(apiURL string, nodeID string) {
 	fmt.Printf(`    API portal   [ %v ]
     Node ID      [ %v ]
 `,
 		apiURL,
 		nodeID)
+}
+
+func PrintStoreMessage(ipfs string, eth string) {
+	fmt.Printf(`    IPFS Endpoint   [ %v ]
+    Ethereum Client      [ %v ]
+`,
+		ipfs,
+		eth)
 }

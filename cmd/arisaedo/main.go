@@ -22,6 +22,8 @@ func main() {
 			&utils.NetworkFlag,
 			&utils.ApiAddrFlag,
 			&utils.ApiCorsFlag,
+			&utils.IPFSClientAddrFlag,
+			&utils.EthClientAddrFlag,
 		},
 		Action: Actions,
 	}
@@ -32,19 +34,24 @@ func main() {
 	}
 }
 
-// todo: make this work
 func Actions(ctx *cli.Context) error {
 	// setup: exit
 	exit := handleExitSignal()
 	defer func() { log.Info("exited") }()
 
 	// setup: api
-	if err := utils.HandleAPIMainThread(ctx); err != nil {
+	if err := utils.HandleAPIGoRoutine(ctx); err != nil {
+		return err
+	}
+
+	// setup: store
+	s, err := utils.HandleStore()
+	if err != nil {
 		return err
 	}
 
 	// return
-	return node.New().Run(exit)
+	return node.New(s).Run(exit)
 }
 
 func handleExitSignal() context.Context {

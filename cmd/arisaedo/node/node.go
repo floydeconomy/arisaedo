@@ -3,19 +3,19 @@ package node
 import (
 	"context"
 	"github.com/floydeconomy/arisaedo-go/co"
-	"github.com/floydeconomy/arisaedo-go/internal"
+	"github.com/floydeconomy/arisaedo-go/store"
 )
 
 // todo: implement logDB
 type Node struct {
 	goes co.Goes
 
-	repo *internal.Repository
+	store *store.Store
 }
 
-func New() *Node {
+func New(store *store.Store) *Node {
 	return &Node{
-		repo: internal.New(),
+		store: store,
 	}
 }
 

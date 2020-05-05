@@ -1,4 +1,4 @@
-package internal
+package store
 
 import (
 	"encoding/json"
@@ -6,31 +6,36 @@ import (
 	"github.com/floydeconomy/arisaedo-go/common"
 	"github.com/floydeconomy/arisaedo-go/kv"
 	shell "github.com/ipfs/go-ipfs-api"
-	"log"
+	"github.com/pkg/errors"
 )
 
-type Repository struct {
+type Store struct {
 	data kv.Store
 
 	shell *shell.Shell
 	client *eth.Client
 }
 
-func New() *Repository {
-	s := shell.NewShell("https://ipfs.infura.io:5001")
-	c, err := eth.Dial("https://mainnet.infura.io") // localhost:8545 for ganache-cli
+type Options struct {
+	Shell     string
+	Ethclient string
+}
+
+func New(o Options) (*Store, error) {
+	s := shell.NewShell(o.Shell)
+	c, err := eth.Dial(o.Ethclient) // localhost:8545 for ganache-cli
 	if err != nil {
-		log.Fatal(err)
+		return nil, errors.Wrapf(err, "eth client failed at [%v]", o.Ethclient)
 	}
-	return &Repository{
+	return &Store{
 		shell:  s,
 		client: c,
-	}
+	}, nil
 }
 
 // Put adds the interface to IPFS and returns the corresponding content identifier (CID)
 // todo: should Batch orders and put to kv store
-func (r Repository) Put(x interface {}) (*common.Identifier, error) {
+func (s Store) Put(x interface {}) (*common.Identifier, error) {
 	// marshall json
 	m, err := json.Marshal(x)
 	if err != nil {
@@ -38,7 +43,7 @@ func (r Repository) Put(x interface {}) (*common.Identifier, error) {
 	}
 
 	// ipfs put
-	cid, err := r.shell.DagPut(m, "json", "cbor")
+	cid, err := s.shell.DagPut(m, "json", "cbor")
 	if err != nil {
 		return nil, err
 	}

@@ -16,7 +16,7 @@ type Case struct {
 	}
 }
 
-// CaseHeader represent internal information about the COVID-19 cases
+// CaseHeader represent store information about the COVID-19 cases
 type CaseHeader struct {
 	// identifiers
 	CountryID  common.Identifier `json:"country"`
