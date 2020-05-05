@@ -17,15 +17,15 @@ type Store struct {
 }
 
 type Options struct {
-	Shell     string
-	Ethclient string
+	Db    string
+	Chain string
 }
 
 func New(o Options) (*Store, error) {
-	s := shell.NewShell(o.Shell)
-	c, err := eth.Dial(o.Ethclient) // localhost:8545 for ganache-cli
+	s := shell.NewShell(o.Db)
+	c, err := eth.Dial(o.Chain) // localhost:8545 for ganache-cli
 	if err != nil {
-		return nil, errors.Wrapf(err, "eth client failed at [%v]", o.Ethclient)
+		return nil, errors.Wrapf(err, "eth db failed at [%v]", o.Chain)
 	}
 	return &Store{
 		shell:  s,
@@ -34,7 +34,6 @@ func New(o Options) (*Store, error) {
 }
 
 // Put adds the interface to IPFS and returns the corresponding content identifier (CID)
-// todo: should Batch orders and put to kv store
 func (s Store) Put(x interface {}) (*common.Identifier, error) {
 	// marshall json
 	m, err := json.Marshal(x)

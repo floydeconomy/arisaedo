@@ -18,6 +18,12 @@ type Pair interface {
 	Value() []byte
 }
 
+// Operator defines the store operator interface
+type Operator interface {
+	Store
+	Close() error
+}
+
 // Store defines the functional implementation of a legitatimate key-value store
 type Store interface {
 	Getter

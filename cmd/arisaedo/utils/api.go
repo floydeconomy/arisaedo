@@ -69,8 +69,8 @@ func HandleStore(ctx *cli.Context) (*store.Store, error) {
 	eth := ctx.String(EthClientAddrFlag.Name)
 	s, err := store.New(
 		store.Options{
-			Shell:     ipfs,
-			Ethclient: eth,
+			Db:    ipfs,
+			Chain: eth,
 		})
 	if err != nil {
 		return nil, err
