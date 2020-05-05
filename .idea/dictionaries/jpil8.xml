@@ -3,7 +3,9 @@
     <words>
       <w>covid</w>
       <w>ethclient</w>
+      <w>ethereum</w>
       <w>ipfs</w>
+      <w>ipfsclient</w>
     </words>
   </dictionary>
 </component>

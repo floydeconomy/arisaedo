@@ -63,17 +63,20 @@ func HandleAPIMainThread(ctx *cli.Context) error {
 	return nil
 }
 
-func HandleStore() (*store.Store ,error) {
+// todo: type check eth and ipfs strings
+func HandleStore(ctx *cli.Context) (*store.Store, error) {
+	ipfs := ctx.String(IPFSClientAddrFlag.Name)
+	eth := ctx.String(EthClientAddrFlag.Name)
 	s, err := store.New(
 		store.Options{
-		Shell:     IPFSClientAddrFlag.Value,
-		Ethclient: EthClientAddrFlag.Value,
-	})
+			Shell:     ipfs,
+			Ethclient: eth,
+		})
 	if err != nil {
 		return nil, err
 	}
 
-	PrintStoreMessage(IPFSClientAddrFlag.Value, EthClientAddrFlag.Value)
+	PrintStoreMessage(ipfs, eth)
 
 	return s, nil
 }

@@ -45,7 +45,7 @@ func Actions(ctx *cli.Context) error {
 	}
 
 	// setup: store
-	s, err := utils.HandleStore()
+	s, err := utils.HandleStore(ctx)
 	if err != nil {
 		return err
 	}
