@@ -12,8 +12,10 @@ require (
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/gorilla/handlers v1.4.2
 	github.com/gorilla/mux v1.7.4
+	github.com/ipfs/go-ipfs v0.5.0
 	github.com/ipfs/go-ipfs-api v0.0.3
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus/common v0.9.1
 	github.com/urfave/cli/v2 v2.2.0
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79 // indirect
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
