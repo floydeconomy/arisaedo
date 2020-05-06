@@ -1,7 +1,7 @@
 package kv
 
 import (
-	"github.com/floydeconomy/arisaedo-go/kv"
+	"github.com/floydeconomy/arisaedo-go/store/data"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 )
@@ -16,7 +16,7 @@ type lvldb struct {
 	db *leveldb.DB
 }
 
-func New(db *leveldb.DB) kv.Operator {
+func New(db *leveldb.DB) data.Operator {
 	return &lvldb{db}
 }
 

@@ -1,14 +1,14 @@
-package kv
+package data
 
-// Getter defines the method to read the kv store
+// Getter defines the method to read the data store
 type Getter interface {
 	Get(key []byte) ([]byte, error)
 	Has(key []byte) (bool, error)
 }
 
-// Putter defines the method to put into kv store
+// Putter defines the method to put into data store
 type Putter interface {
-	Put(key, value []byte) error
+	Put(value []byte) (string, error)
 	Delete(key []byte) error
 }
 
@@ -18,13 +18,13 @@ type Pair interface {
 	Value() []byte
 }
 
-// Operator defines the store operator interface
+// Operator defines the store chain interface
 type Operator interface {
 	Store
 	Close() error
 }
 
-// Store defines the functional implementation of a legitatimate key-value store
+// Store defines the functional implementation of a legitimate key-value store
 type Store interface {
 	Getter
 	Putter

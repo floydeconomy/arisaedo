@@ -64,21 +64,15 @@ func HandleAPIMainThread(ctx *cli.Context) error {
 }
 
 // todo: type check eth and ipfs strings
-func HandleStore(ctx *cli.Context) (*store.Store, error) {
+func HandleStore(ctx *cli.Context) *store.Store {
 	ipfs := ctx.String(IPFSClientAddrFlag.Name)
 	eth := ctx.String(EthClientAddrFlag.Name)
-	s, err := store.New(
-		store.Options{
-			Db:    ipfs,
-			Chain: eth,
-		})
-	if err != nil {
-		return nil, err
-	}
-
+	s := store.New(store.Options{
+		Db:    ipfs,
+		Chain: eth,
+	})
 	PrintStoreMessage(ipfs, eth)
-
-	return s, nil
+	return s
 }
 
 func HandleAPIGoRoutine(ctx *cli.Context) error {

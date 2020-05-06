@@ -1,6 +1,6 @@
-package kv
+package chain
 
-// define individual functions for kv store
+// define individual functions for data store
 
 type (
 	GetFunc    func(key []byte) ([]byte, error)
