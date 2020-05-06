@@ -14,9 +14,9 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name: "Arisaedo",
-		Version: "1.0.0",
-		Usage: "Node of Arisaedo COVID-19 Data Aggregator",
+		Name:      "Arisaedo",
+		Version:   "1.0.0",
+		Usage:     "Node of Arisaedo COVID-19 Data Aggregator",
 		Copyright: "2020 Arisaedo <https://github.com/floydeconomy/>",
 		Flags: []cli.Flag{
 			&utils.NetworkFlag,
@@ -61,7 +61,7 @@ func handleExitSignal() context.Context {
 		signal.Notify(exitSignalCh, os.Interrupt, os.Kill, syscall.SIGTERM)
 
 		select {
-		case sig:= <-exitSignalCh:
+		case sig := <-exitSignalCh:
 			log.Info("exit signal received", "signal", sig)
 			cancel()
 		}

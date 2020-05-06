@@ -13,7 +13,7 @@ type Timeline struct {
 
 	Beneficiaries []common.Address // can be multiple beneficiaries
 	Identifiers   c.Identifiers    // new identifiers
-	Update        []common.Hash	   // update wrong timeline-based data
+	Update        []common.Hash    // update wrong timeline-based data
 
 	cache struct {
 		index atomic.Value // beneficiaries identify index

@@ -12,7 +12,7 @@ import (
 type Store struct {
 	data kv.Store
 
-	shell *shell.Shell
+	shell  *shell.Shell
 	client *eth.Client
 }
 
@@ -34,7 +34,7 @@ func New(o Options) (*Store, error) {
 }
 
 // Put adds the interface to IPFS and returns the corresponding content identifier (CID)
-func (s Store) Put(x interface {}) (*common.Identifier, error) {
+func (s Store) Put(x interface{}) (*common.Identifier, error) {
 	// marshall json
 	m, err := json.Marshal(x)
 	if err != nil {

@@ -13,8 +13,8 @@ type Country struct {
 
 type CountryHeader struct {
 	// body
-	Name     string            `json:"Name"`
-	Location Coordinate        `json:"Location"`
+	Name     string     `json:"Name"`
+	Location Coordinate `json:"Location"`
 }
 
 // Coordinate represents lat/lng coordinates of a location

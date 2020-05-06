@@ -40,4 +40,3 @@ func New(
 	// return
 	return handler.ServeHTTP, nil
 }
-

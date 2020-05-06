@@ -48,4 +48,3 @@ func (ldb *lvldb) Put(key, val []byte) error {
 func (ldb *lvldb) Delete(key []byte) error {
 	return ldb.db.Delete(key, &writeOpt)
 }
-

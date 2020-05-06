@@ -7,7 +7,7 @@ import (
 )
 
 type httpError struct {
-	cause error
+	cause  error
 	status int
 }
 
@@ -17,21 +17,21 @@ func (e *httpError) Error() string {
 
 func HTTPError(cause error, status int) error {
 	return &httpError{
-		cause: cause,
+		cause:  cause,
 		status: status,
 	}
 }
 
 func BadRequest(cause error) error {
 	return &httpError{
-		cause: cause,
+		cause:  cause,
 		status: http.StatusBadRequest,
 	}
 }
 
 func Forbidden(cause error) error {
 	return &httpError{
-		cause: cause,
+		cause:  cause,
 		status: http.StatusForbidden,
 	}
 }
@@ -58,7 +58,6 @@ func WrapHandlerFunc(f HandlerFunc) http.HandlerFunc {
 		}
 	}
 }
-
 
 // content types
 const (
