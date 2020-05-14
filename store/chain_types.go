@@ -1,4 +1,4 @@
-package data
+package store
 
 // Getter defines the method to read the data store
 type Getter interface {
@@ -19,13 +19,13 @@ type Pair interface {
 }
 
 // Operator defines the store chain interface
-type Operator interface {
-	Store
+type ChainOperator interface {
+	IChain
 	Close() error
 }
 
 // Store defines the functional implementation of a legitimate key-value store
-type Store interface {
+type IChain interface {
 	Getter
 	Putter
 }

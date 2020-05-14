@@ -1,13 +1,8 @@
 package store
 
-import (
-	"github.com/floydeconomy/arisaedo-go/store/chain"
-	"github.com/floydeconomy/arisaedo-go/store/data"
-)
-
 type Store struct {
-	db     data.Operator
-	client chain.Operator
+	db     ChainOperator
+	client DataOperator
 }
 
 type Options struct {

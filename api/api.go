@@ -2,10 +2,12 @@ package api
 
 import (
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
+
+	"github.com/floydeconomy/arisaedo-go/api/utils"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +31,7 @@ func New(
 	// router
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/api/ipfs/x/{id}", handler).Methods("GET", "PUT")
+	router.HandleFunc("/api/ipfs/x/{id}", utils.ErrorHandler(handler)).Methods("GET", "PUT")
 
 	// CORS
 	handler := handlers.CompressHandler(router)

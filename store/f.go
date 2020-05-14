@@ -1,4 +1,4 @@
-package chain
+package store
 
 // define individual functions for data store
 

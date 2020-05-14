@@ -1,7 +1,6 @@
 package store
 
 import (
-	"github.com/floydeconomy/arisaedo-go/store/data"
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
@@ -9,7 +8,7 @@ type ipfs struct {
 	shell *shell.Shell
 }
 
-func newDataStore(args string) data.Operator {
+func newDataStore(args string) DataOperator {
 	return &ipfs{
 		shell.NewShell(args),
 	}

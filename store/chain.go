@@ -2,7 +2,6 @@ package store
 
 import (
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/floydeconomy/arisaedo-go/store/data"
 	"log"
 )
 
@@ -11,7 +10,7 @@ type eth struct {
 }
 
 // todo: fix log.fatal
-func newChainStore(args string) data.Operator {
+func newChainStore(args string) ChainOperator {
 	c, err := ethclient.Dial(args) // localhost:8545 for ganache-cli
 	if err != nil {
 		log.Fatal("ethclient failed")

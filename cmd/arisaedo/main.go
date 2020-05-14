@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/floydeconomy/arisaedo-go/cmd/arisaedo/node"
-	"github.com/floydeconomy/arisaedo-go/cmd/arisaedo/utils"
 	"github.com/urfave/cli/v2"
 	"os"
 	"os/signal"
@@ -16,14 +14,13 @@ func main() {
 	app := &cli.App{
 		Name:      "Arisaedo",
 		Version:   "1.0.0",
-		Usage:     "Node of Arisaedo COVID-19 Data Aggregator",
 		Copyright: "2020 Arisaedo <https://github.com/floydeconomy/>",
 		Flags: []cli.Flag{
-			&utils.NetworkFlag,
-			&utils.ApiAddrFlag,
-			&utils.ApiCorsFlag,
-			&utils.IPFSClientAddrFlag,
-			&utils.EthClientAddrFlag,
+			&NetworkFlag,
+			&ApiAddrFlag,
+			&ApiCorsFlag,
+			&IPFSClientAddrFlag,
+			&EthClientAddrFlag,
 		},
 		Action: Actions,
 	}
@@ -40,15 +37,15 @@ func Actions(ctx *cli.Context) error {
 	defer func() { log.Info("exited") }()
 
 	// setup: api
-	if err := utils.HandleAPIGoRoutine(ctx); err != nil {
+	if err := HandleAPIGoRoutine(ctx); err != nil {
 		return err
 	}
 
 	// setup: store
-	s := utils.HandleStore(ctx)
+	s := HandleStore(ctx)
 
 	// return
-	return node.New(s).Run(exit)
+	return New(s).Run(exit)
 }
 
 func handleExitSignal() context.Context {
