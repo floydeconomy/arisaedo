@@ -1,8 +1,7 @@
-package utils
+package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/floydeconomy/arisaedo-go/api"
 	"github.com/floydeconomy/arisaedo-go/co"
 	"github.com/floydeconomy/arisaedo-go/store"
@@ -64,32 +63,15 @@ func HandleAPIMainThread(ctx *cli.Context) error {
 }
 
 // todo: type check eth and ipfs strings
-func HandleStore(ctx *cli.Context) (*store.Store, error) {
+func HandleStore(ctx *cli.Context) *store.Store {
 	ipfs := ctx.String(IPFSClientAddrFlag.Name)
 	eth := ctx.String(EthClientAddrFlag.Name)
-	s, err := store.New(
-		store.Options{
-			Db:    ipfs,
-			Chain: eth,
-		})
-	if err != nil {
-		return nil, err
-	}
-
+	s := store.New(store.Options{
+		Db:    ipfs,
+		Chain: eth,
+	})
 	PrintStoreMessage(ipfs, eth)
-
-	return s, nil
-}
-
-func HandleAPIGoRoutine(ctx *cli.Context) error {
-	handler, _ := api.New(ApiCorsFlag.Name)
-	svrUrl, svrClose, err := StartAPIServer(ctx, handler)
-	if err != nil {
-		return err
-	}
-	defer func() { log.Info("stopping API server...!"); svrClose() }()
-	PrintAPIMessage(svrUrl, "1") // todo: nodeID should check p2p comm
-	return nil
+	return s
 }
 
 func handleAPITimeout(h http.Handler, timeout time.Duration) http.Handler {
@@ -101,19 +83,13 @@ func handleAPITimeout(h http.Handler, timeout time.Duration) http.Handler {
 	})
 }
 
-// todo: move?
-func PrintAPIMessage(apiURL string, nodeID string) {
-	fmt.Printf(`    API portal   [ %v ]
-    Node ID      [ %v ]
-`,
-		apiURL,
-		nodeID)
-}
-
-func PrintStoreMessage(ipfs string, eth string) {
-	fmt.Printf(`    IPFS Endpoint   [ %v ]
-    Ethereum Client      [ %v ]
-`,
-		ipfs,
-		eth)
+func HandleAPIGoRoutine(ctx *cli.Context) error {
+	handler, _ := api.New(ApiCorsFlag.Name)
+	url, close, err := StartAPIServer(ctx, handler)
+	if err != nil {
+		return err
+	}
+	defer func() { log.Info("stopping API server...!"); close() }()
+	PrintAPIMessage(url, "1") // todo: nodeID should check p2p comm
+	return nil
 }

@@ -6,15 +6,19 @@ import (
 	"net/http"
 )
 
+// httpError defines the type of httpError, number of error control
+// blocks are enforced to data-type of status
 type httpError struct {
 	cause  error
 	status int
 }
 
+// Error returns the cause of the Error in string
 func (e *httpError) Error() string {
 	return e.cause.Error()
 }
 
+// Error returns a http error as defined
 func HTTPError(cause error, status int) error {
 	return &httpError{
 		cause:  cause,
@@ -22,6 +26,7 @@ func HTTPError(cause error, status int) error {
 	}
 }
 
+// BadRequest returns an error for bad request, 400. (RFC 7231, 6.5.1)
 func BadRequest(cause error) error {
 	return &httpError{
 		cause:  cause,
@@ -29,6 +34,7 @@ func BadRequest(cause error) error {
 	}
 }
 
+// Forbidden returns an error for forbidden requests, 403. (RFC 7231, 6.5.3)
 func Forbidden(cause error) error {
 	return &httpError{
 		cause:  cause,
@@ -39,13 +45,12 @@ func Forbidden(cause error) error {
 // HandlerFunc like http.HandlerFunc, bu it returns an error.
 // If the returned error is httpError type, httpError.status will be responded,
 // otherwise http.StatusInternalServerError responded.
-type HandlerFunc func(http.ResponseWriter, *http.Request) error
+type Handler func(http.ResponseWriter, *http.Request) error
 
 // WrapHandlerFunc convert HandlerFunc to http.HandlerFunc.
-func WrapHandlerFunc(f HandlerFunc) http.HandlerFunc {
+func ErrorHandler(fn Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := f(w, r)
-		if err != nil {
+		if err := fn(w, r); err != nil {
 			if he, ok := err.(*httpError); ok {
 				if he.cause != nil {
 					http.Error(w, he.cause.Error(), he.status)
